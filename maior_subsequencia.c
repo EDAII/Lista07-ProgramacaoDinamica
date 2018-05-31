@@ -10,12 +10,32 @@ void preencheRegistros(int *registros){
     }
 }
 
-void maiorSequenciaCrescente(int *registros){
-  //Código para identificar maior sequencia
+int maximo(int maiorSequencia, int atual){
+  return maiorSequencia > atual ? maiorSequencia : atual;
 }
 
-void maiorSequenciaX(int *registros, int posicao){
-  //Código para identificar maior sequencia até posicao x
+int maiorSequenciaCrescente(int *registros,int *tamSubSequencias,int *predecessor){
+  //Código para identificar maior sequencia
+  int j, i, maiorSequencia;
+
+  for(j=1; j<= TAMREGISTROS; j++){
+    tamSubSequencias[j] = 1;
+    predecessor[j] = 0;
+    for(i=1; i<= j-1; i++){
+      if((registros[i]<registros[j]) && (tamSubSequencias[i] + 1 > tamSubSequencias[j])){
+        tamSubSequencias[j] = tamSubSequencias[i] + 1;
+        predecessor[j] = i;
+      }
+    }
+  }
+
+  maiorSequencia = 0;
+
+  for(i=1; i<= TAMREGISTROS; i++){
+    maiorSequencia = maximo(maiorSequencia, tamSubSequencias[i]);
+  }
+
+  return maiorSequencia;
 }
 
 void imprimeRegistros(int *registros){
@@ -42,7 +62,8 @@ int menu(){
 
 int main(){
 
-  int registros[TAMREGISTROS], opcao;
+  int registros[TAMREGISTROS], opcao, maiorSequencia;
+  int tamSubSequencias[TAMREGISTROS], predecessor[TAMREGISTROS];
 
   preencheRegistros(registros);
 
@@ -52,7 +73,8 @@ int main(){
       case 0: printf("Encerrando ...\n");
       break;
       case 1:
-        maiorSequenciaCrescente(registros);
+        maiorSequencia = maiorSequenciaCrescente(registros, tamSubSequencias, predecessor);
+        printf("\nA maior sequencia e: %d", maiorSequencia);
       break;
       case 2: imprimeRegistros(registros);
       break;
