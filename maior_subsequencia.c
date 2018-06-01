@@ -1,9 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdio_ext.h>
+#include<time.h>
 
 #define TAMREGISTROS 10
-#define LIMPA_BUFFER __fpurge(stdin)
 
 #ifdef WIN32
     #define LIMPA_TELA system("cls")
@@ -47,22 +46,28 @@ int tamMaiorSequenciaQuadratica(int *registros,int *tamSubSequencias,int *predec
 }
 
 void maiorSequenciaX(int *tamSubSequencias,int maiorSequencia, int *predecessor, int *registros){
-  int j = 0;
+  int j = 0, i = 0;
+  int vetorMaiorSequencia[maiorSequencia];
 
   while(tamSubSequencias[j] != maiorSequencia){
     j = j + 1;
-  };
+  }
 
   while(j>0){
-    printf(" %d ", registros[j] );
+    vetorMaiorSequencia[i] = registros[j];
     j = predecessor[j];
+    i++;
+  }
+
+  for(i = maiorSequencia - 1; i >= 0; i--){
+    printf("%d ", vetorMaiorSequencia[i]);
   }
 }
 
 void imprimeRegistros(int *registros){
   int i;
-  printf("\n\nREGISTROS\n");
-  printf("--------------------------------------------\n" );
+  printf("REGISTROS\n");
+  printf("---------------------------------------------------------\n" );
   for (i = 0; i < TAMREGISTROS; i++){
     printf("%d - ",registros[i]);
   }
@@ -71,7 +76,7 @@ void imprimeRegistros(int *registros){
 int menu(){
   int op;
   printf("\n\n\n======================================== MENU =====================================================\n");
-  printf("1 - Maior Sequencia Crescente em O(n^2)\n");
+  printf("1 - Maior Sequencia Crescente\n");
   printf("2 - Printar o vetor original\n");
   printf("0 - SAIR");
   printf("\n\n");
@@ -85,6 +90,7 @@ int main(){
 
   int registros[TAMREGISTROS], opcao, maiorSequencia;
   int tamSubSequencias[TAMREGISTROS+1], predecessor[TAMREGISTROS+1];
+  srand(time(NULL));
 
   preencheRegistros(registros);
 
@@ -96,7 +102,7 @@ int main(){
       case 1:
         LIMPA_TELA;
         maiorSequencia = tamMaiorSequenciaQuadratica(registros, tamSubSequencias, predecessor);
-        printf("\nA maior sequencia possui %d elementos", maiorSequencia);
+        printf("A maior sequencia possui %d elementos: ", maiorSequencia);
         maiorSequenciaX(tamSubSequencias,maiorSequencia,predecessor,registros);
       break;
       case 2:
