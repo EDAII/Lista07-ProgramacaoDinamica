@@ -1,7 +1,15 @@
-#include<stdlib.h>
 #include<stdio.h>
+#include<stdlib.h>
+#include<stdio_ext.h>
 
 #define TAMREGISTROS 10
+#define LIMPA_BUFFER __fpurge(stdin)
+
+#ifdef WIN32
+    #define LIMPA_TELA system("cls")
+#else
+    #define LIMPA_TELA system("clear")
+#endif
 
 void preencheRegistros(int *registros){
     int i;
@@ -14,7 +22,7 @@ int maximo(int maiorSequencia, int atual){
   return maiorSequencia > atual ? maiorSequencia : atual;
 }
 
-int maiorSequenciaCrescente(int *registros,int *tamSubSequencias,int *predecessor){
+int maiorSequenciaQuadratica(int *registros,int *tamSubSequencias,int *predecessor){
   //Código para identificar maior sequencia
   int j, i, maiorSequencia;
 
@@ -38,10 +46,11 @@ int maiorSequenciaCrescente(int *registros,int *tamSubSequencias,int *predecesso
   return maiorSequencia;
 }
 
+
 void imprimeRegistros(int *registros){
   int i;
   printf("\n\nREGISTROS\n");
-  printf("--------------------------------------------------------------------------------------------------------------------------------------------\n" );
+  printf("--------------------------------------------\n" );
   for (i = 0; i < TAMREGISTROS; i++){
     printf("%d - ",registros[i]);
   }
@@ -49,12 +58,12 @@ void imprimeRegistros(int *registros){
 
 int menu(){
   int op;
-  printf("\n\n\n===================================================== MENU ==================================================================\n");
-  printf("1 - Maior Sequencia Crescente \n");
+  printf("\n\n\n======================================== MENU =====================================================\n");
+  printf("1 - Maior Sequencia Crescente em O(n^2)\n");
   printf("2 - Printar o vetor original\n");
   printf("0 - SAIR");
   printf("\n\n");
-  printf("Digite a opcao desejada:");
+  printf("Digite a opcao desejada: ");
   scanf("%d", &op);
   return op;
 }
@@ -63,7 +72,7 @@ int menu(){
 int main(){
 
   int registros[TAMREGISTROS], opcao, maiorSequencia;
-  int tamSubSequencias[TAMREGISTROS], predecessor[TAMREGISTROS];
+  int tamSubSequencias[TAMREGISTROS+1], predecessor[TAMREGISTROS+1];
 
   preencheRegistros(registros);
 
@@ -73,10 +82,13 @@ int main(){
       case 0: printf("Encerrando ...\n");
       break;
       case 1:
-        maiorSequencia = maiorSequenciaCrescente(registros, tamSubSequencias, predecessor);
-        printf("\nA maior sequencia e: %d", maiorSequencia);
+        LIMPA_TELA;
+        maiorSequencia = maiorSequenciaQuadratica(registros, tamSubSequencias, predecessor);
+        printf("\nA maior sequencia e %d", maiorSequencia);
       break;
-      case 2: imprimeRegistros(registros);
+      case 2:
+        LIMPA_TELA;
+        imprimeRegistros(registros);
       break;
       default:
         printf("Opcao Inexistente\n");
