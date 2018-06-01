@@ -22,7 +22,7 @@ int maximo(int maiorSequencia, int atual){
   return maiorSequencia > atual ? maiorSequencia : atual;
 }
 
-int maiorSequenciaQuadratica(int *registros,int *tamSubSequencias,int *predecessor){
+int tamMaiorSequenciaQuadratica(int *registros,int *tamSubSequencias,int *predecessor){
   //Código para identificar maior sequencia
   int j, i, maiorSequencia;
 
@@ -46,6 +46,18 @@ int maiorSequenciaQuadratica(int *registros,int *tamSubSequencias,int *predecess
   return maiorSequencia;
 }
 
+void maiorSequenciaX(int *tamSubSequencias,int maiorSequencia, int *predecessor, int *registros){
+  int j = 0;
+
+  while(tamSubSequencias[j] != maiorSequencia){
+    j = j + 1;
+  };
+
+  while(j>0){
+    printf(" %d ", registros[j] );
+    j = predecessor[j];
+  }
+}
 
 void imprimeRegistros(int *registros){
   int i;
@@ -83,8 +95,9 @@ int main(){
       break;
       case 1:
         LIMPA_TELA;
-        maiorSequencia = maiorSequenciaQuadratica(registros, tamSubSequencias, predecessor);
-        printf("\nA maior sequencia e %d", maiorSequencia);
+        maiorSequencia = tamMaiorSequenciaQuadratica(registros, tamSubSequencias, predecessor);
+        printf("\nA maior sequencia possui %d elementos", maiorSequencia);
+        maiorSequenciaX(tamSubSequencias,maiorSequencia,predecessor,registros);
       break;
       case 2:
         LIMPA_TELA;
